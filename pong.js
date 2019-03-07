@@ -7,6 +7,18 @@ function main()  {
 
 
    var ctx = canvas.getContext("2d");
+
+   window.onkeydown = (e) => {
+    e.preventDefault();
+    console.log(e.key);
+    if(e.key == 'a') {
+      console.log("tecla A apretada")
+    }
+   }
+
+
+
+
    var bola = {
 
      x_ini :50,
