@@ -168,7 +168,6 @@ function main()  {
   raqueta.draw();
 
    var timer = null;
-
    window.onkeydown = (e) => {
     e.preventDefault();
 
