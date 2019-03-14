@@ -4,18 +4,65 @@ function main()  {
    var canvas = document.getElementById('display');
    canvas.width = 600;
    canvas.height = 540 ;
-
-
+   var i;
+   var choque_bola_raqueta = false;
    var ctx = canvas.getContext("2d");
-
-   window.onkeydown = (e) => {
-    e.preventDefault();
-    console.log(e.key);
-    if(e.key == 'a') {
-      console.log("tecla A apretada")
-    }
+   var dibujar = {
+     puntuacion: function() {
+       ctx.font="80px Verdana";
+       ctx.fillStyle = 'white';
+       ctx.fillText("0",220,80,);
+       ctx.fillText("2",340,80,);
+     },
+     red: function (){
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,0, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,25, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,50, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,75, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,100, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,125, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,150, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,175, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,200, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,225, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,250, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,275, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,300, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,325, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,350, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,375, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,400, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,425, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,450, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,475, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,500, 2, 15);
+       ctx.fillStyle = 'white';
+       ctx.fillRect (300,525, 2, 15);
+     }
    }
-
+   dibujar.red();
+   dibujar.puntuacion();
 
 
 
@@ -28,7 +75,7 @@ function main()  {
      y: 0,
 
      vx :7,
-     vy: 7,
+     vy: 0,
 
      ctx : null,
 
@@ -103,9 +150,13 @@ function main()  {
       }
     },
 
-    hit: function(a,b) {
+    chocabola: function(a,b) {
       for (i = this.y; i < this.y + this.height; i++) {
-        if (a == raqueta.x + raqueta.width && ( b == i || b+1 == i || b+2 ==  i || b+3 ==  i || b+4 ==  i || b+5 ==  i) )  {
+        console.log("comprobandooo");
+        console.log(this.x + this.width);
+        console.log(this.y + this.height);
+        console.log(a,b);
+        if (a == raqueta.x + raqueta.width && ( b == i || b+1 == i || b+2 ==  i || b+3 ==  i || b+4 ==  i || b+5 ==  i || b+6 ==  i || b+7 ==  i) )  {
           choque_bola_raqueta = true;
           console.log("Han chocado");
         }
@@ -115,6 +166,7 @@ function main()  {
   }
   raqueta.init(ctx);
   raqueta.draw();
+
    var timer = null;
 
    window.onkeydown = (e) => {
@@ -142,7 +194,8 @@ function main()  {
 
           // Borrar el canvas
           ctx.clearRect(0,0,canvas.width, canvas.height);
-
+          dibujar.red();
+          dibujar.puntuacion();
           //Dibujar la bola
           bola.draw()
 
@@ -150,7 +203,7 @@ function main()  {
           raqueta.draw();
 
           //Comprobacion de si la bola choca con la raqueta
-          raqueta.hit(bola.x,bola.y)
+          raqueta.chocabola(bola.x,bola.y)
 
           // Choque y rebote de la bola
           if (bola.x > canvas.width) {
@@ -202,20 +255,12 @@ function main()  {
 
         }, 15)
       }
-
-
-   var sacar = document.getElementById('sacar');
-
-
-      }
-   },
+    }
+   }
 
 
    //--puntuacion
-   ctx.font="80px Verdana";
-   ctx.fillStyle = 'white';
-   ctx.fillText("0",220,80,);
-   ctx.fillText("2",340,80,);
+
 
 
 
@@ -225,48 +270,6 @@ function main()  {
 
 
    //--red
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,0, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,25, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,50, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,75, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,100, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,125, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,150, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,175, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,200, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,225, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,250, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,275, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,300, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,325, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,350, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,375, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,400, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,425, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,450, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,475, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,500, 2, 15);
-   ctx.fillStyle = 'white';
-   ctx.fillRect (300,525, 2, 15);
+
+
 }
