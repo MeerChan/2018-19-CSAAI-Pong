@@ -25,8 +25,7 @@ function raqueta(posx,posy){
   };
   //-- Update
   this.update = function () {
-    this.x += this.vx;
-    this.y += this.vy;
+      this.y += this.vy;
   };
   //-- Reset: Set the ball to the initial state
   this.reset = function() {
@@ -69,20 +68,30 @@ function pelota(){
   this.reset = function() {
     this.x = this.x_ini;
     this.y = this.y_ini;
+    this.vx = 4;
+    this.vy = 1;
   }
 }
 function contador(){
   this.ctx = null,
+  this.valor1 = 0,
+  this.valor2 = 0,
   this.init = function(ctx) {
     this.ctx = ctx;
+  },
+  this.update1 = function () {
+    this.valor1 += 1;
+  },
+  this.update2 = function () {
+    this.valor2 += 1;
   },
   this.draw = function () {
     this.ctx.font = "80px Arial";
     this.ctx.fillStyle = 'white'
-    this.ctx.fillText("0", 220, 70);
+    this.ctx.fillText(this.valor1, 220, 70);
     this.ctx.font = "80px Arial";
     this.ctx.fillStyle = 'white'
-    this.ctx.fillText("0", 340, 70);
+    this.ctx.fillText(this.valor2, 340, 70);
   }
 }
 function main(){
@@ -94,8 +103,8 @@ function main(){
 
   var ctx = canvas.getContext("2d");
 
-  var player1 = new raqueta(50,180);
-  var player2 = new raqueta(500,180);
+  var player1 = new raqueta(20,180);
+  var player2 = new raqueta(570,180);
   var bola = new pelota();
   var puntos = new contador();
   player1.init(ctx)
@@ -113,11 +122,8 @@ function main(){
   ctx.lineWidth = 2;
   ctx.strokeStyle = 'white';
   ctx.stroke();
-  //-- Crear timer para la animación
-  //-- Inicialmente a null
   var timer = null;
   var e;
-  //-- Función de retrollamda del botón de sacar.
   window.onkeydown = (e) => {
     e.preventDefault();
     console.log(e.keyCode)
@@ -137,7 +143,7 @@ function main(){
         bola.update();
         //-- Borrar el canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        //-- Dibuar la bola y raquetas
+        //-- Dibuar la bola y raquetas y puntos
         bola.draw();
         player1.draw();
         player2.draw();
@@ -150,17 +156,21 @@ function main(){
         ctx.strokeStyle = 'white';
         ctx.stroke();
         //-- Si la bola llega a la parte derecha del canvas:
-        //-- Rebotar
-        if (bola.x > canvas.width || bola.x < 0) {
-          bola.vx = -bola.vx
-          //-- Eliminar el timer
-          //clearInterval(timer)
-          //timer = null;
-          //bola.update();
+        //-- suma 1 jugador 1
+        if (bola.x > canvas.width) {
+          //Actualiza contador (sube puntos a j1)
+          puntos.update1();
           //-- Bola a su posicion inicial
-          //bola.reset();
+          bola.reset();
           //-- Dibujar la bola en pos. inicial
-          //bola.draw();
+          bola.draw();
+        }if (bola.x < 0) {
+          //Actualiza contador (sube puntos a j2)
+          puntos.update2();
+          //-- Bola a su posicion inicial
+          bola.reset();
+          //-- Dibujar la bola en pos. inicial
+          bola.draw();
         };
         if (bola.y > canvas.height || bola.y < 0) {
           bola.vy = -bola.vy
