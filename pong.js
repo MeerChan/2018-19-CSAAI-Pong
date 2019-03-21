@@ -1,274 +1,212 @@
-function main()  {
-  console.log ("hola");
-
-   var canvas = document.getElementById('display');
-   canvas.width = 600;
-   canvas.height = 540 ;
-   var i;
-   var choque_bola_raqueta = false;
-   var ctx = canvas.getContext("2d");
-   var dibujar = {
-     puntuacion: function() {
-       ctx.font="80px Verdana";
-       ctx.fillStyle = 'white';
-       ctx.fillText("0",220,80,);
-       ctx.fillText("2",340,80,);
-     },
-     red: function (){
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,0, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,25, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,50, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,75, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,100, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,125, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,150, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,175, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,200, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,225, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,250, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,275, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,300, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,325, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,350, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,375, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,400, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,425, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,450, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,475, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,500, 2, 15);
-       ctx.fillStyle = 'white';
-       ctx.fillRect (300,525, 2, 15);
-     }
-   }
-   dibujar.red();
-   dibujar.puntuacion();
-
-
-
-   var bola = {
-
-     x_ini :50,
-     y_ini :50,
-
-     x : 0,
-     y: 0,
-
-     vx :7,
-     vy: 0,
-
-     ctx : null,
-
-     width : 5,
-     height : 5,
-
-
-     reset : function () {
-       this.x = this.x_ini;
-       this.y = this.y_ini;
-     },
-
-     init : function (ctx) {
-        console.log("Bola:init");
-        this.reset();
-        this.ctx = ctx;
-     },
-     draw: function () {
-        console.log("Bola:draw")
-        this.ctx.fillStyle = 'white';
-        this.ctx.fillRect(this.x,this.y, this.width, this.height);
-     },
-     update: function () {
-        console.log("Bola:update")
-        this.x = this.x + this.vx;
-        this.y = this.y + this.vy;
-     }
-   };
-
-   bola.init(ctx);
-   bola.draw();
-
-   var raqueta = {
-
-    x_ini: 20,
-    y_ini: 240,
-
-    x: 0,
-    y: 0,
-
-    ctx: null,
-
-    vy: 30,
-
-    width: 10,
-    height: 60,
-
-    direccion: null,
-
-    reset: function () {
-      this.x = this.x_ini;
-      this.y = this.y_ini;
-      this.direccion = null;
-    },
-
-    init : function(ctx) {
-      this.reset();
-      this.ctx = ctx;
-
-    },
-
-    draw: function() {
-      this.ctx.fillStyle = 'white';
-      this.ctx.fillRect(this.x, this.y, this.width, this.height);
-    },
-
-    update: function() {
-      if (this.direccion == "arriba") {
-        this.y = this.y - this.vy;
-      } else if (this.direccion == "abajo") {
-        this.y = this.y + this.vy;
-      }
-    },
-
-    chocabola: function(a,b) {
-      for (i = this.y; i < this.y + this.height; i++) {
-        console.log("comprobandooo");
-        console.log(this.x + this.width);
-        console.log(this.y + this.height);
-        console.log(a,b);
-        if (a == raqueta.x + raqueta.width && ( b == i || b+1 == i || b+2 ==  i || b+3 ==  i || b+4 ==  i || b+5 ==  i || b+6 ==  i || b+7 ==  i) )  {
-          choque_bola_raqueta = true;
-          console.log("Han chocado");
-        }
-     }
-   }
-
+function raqueta(posx,posy){
+  //-- Posición inicial de la pelota
+  this.x_ini = posx;
+  this.y_ini = posy;
+  //-- Dimensiones de la Bola
+  this.width = 10;
+  this.height = 40;
+  //-- Coornenadas
+  this.x =  0;
+  this.y = 0;
+  //-- Velocidad
+  this.vx = 0;
+  this.vy = 0;
+  //-- Contexto
+  this.ctx = null;
+  //-- Inicializar la bola
+  this.init = function(ctx) {
+    this.ctx = ctx;
+    this.reset();
+  };
+  //-- Dibujar
+  this.draw = function () {
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(this.x, this.y, this.width, this.height)
+  };
+  //-- Update
+  this.update = function () {
+    this.x += this.vx;
+    this.y += this.vy;
+  };
+  //-- Reset: Set the ball to the initial state
+  this.reset = function() {
+    this.x = this.x_ini;
+    this.y = this.y_ini;
+  };
+}
+//-- Definir el objeto BOLA
+function pelota(){
+  //-- Posición inicial de la pelota
+  this.x_ini = 61,
+  this.y_ini = 195,
+  //-- Dimensiones de la Bola
+  this.width = 5,
+  this.height = 5,
+  //-- Coornenadas
+  this.x = 0,
+  this.y = 0,
+  //-- Velocidad
+  this.vx = 4,
+  this.vy = 1,
+  //-- Contexto
+  this.ctx = null,
+  //-- Inicializar la bola
+  this.init = function(ctx) {
+    this.ctx = ctx;
+    this.reset();
+  },
+  //-- Dibujar
+  this.draw = function () {
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(this.x, this.y, this.width, this.height)
+  },
+  //-- Update
+  this.update = function () {
+    this.x += this.vx;
+    this.y += this.vy;
+  },
+  //-- Reset: Set the ball to the initial state
+  this.reset = function() {
+    this.x = this.x_ini;
+    this.y = this.y_ini;
   }
-  raqueta.init(ctx);
-  raqueta.draw();
+}
+function contador(){
+  this.ctx = null,
+  this.init = function(ctx) {
+    this.ctx = ctx;
+  },
+  this.draw = function () {
+    this.ctx.font = "80px Arial";
+    this.ctx.fillStyle = 'white'
+    this.ctx.fillText("0", 220, 70);
+    this.ctx.font = "80px Arial";
+    this.ctx.fillStyle = 'white'
+    this.ctx.fillText("0", 340, 70);
+  }
+}
+function main(){
+  console.log("Pong: Main: Start!")
 
-   var timer = null;
-   window.onkeydown = (e) => {
-    e.preventDefault();
+  var canvas = document.getElementById('display')
+  canvas.width = 600;
+  canvas.height = 400;
 
-    if (e.key == 'Enter'){
-      // Lanzar el timer (si es que no estaba ya lanzado)
-      if (!timer) {
-        timer = setInterval(() =>{
-          // Actualizar la bola
-           bola.update()
+  var ctx = canvas.getContext("2d");
 
-         // Movimiento de una raqueta
-         window.onkeydown = (e) => {
-           e.preventDefault();
-
-           if (e.key == 'ArrowUp' && raqueta.y  > 0) {
-             raqueta.direccion = "arriba";
-             raqueta.update()
-           } else if (e.key == "ArrowDown" && raqueta.y + raqueta.height < canvas.height ) {
-             raqueta.direccion = "abajo";
-             raqueta.update();
-           }
-        },
-
-          // Borrar el canvas
-          ctx.clearRect(0,0,canvas.width, canvas.height);
-          dibujar.red();
-          dibujar.puntuacion();
-          //Dibujar la bola
-          bola.draw()
-
-          //Dibujar la raqueta
-          raqueta.draw();
-
-          //Comprobacion de si la bola choca con la raqueta
-          raqueta.chocabola(bola.x,bola.y)
-
-          // Choque y rebote de la bola
-          if (bola.x > canvas.width) {
-            bola.vx = -7;
-            bola.direccion = "izquierda";
-          } else if (bola.y < 0 && bola.x < 0) {
-            bola.vx = 7;
-            bola.vy= 15;
-            bola.direccion = "derecha";
-          } else if (bola.x > canvas.width && bola.y > canvas.height) {
-            bola.vx = -15;
-            bola.vy = -7;
-            bola.direccion = "izquierda";
-          } else if (bola.x < 0 && bola.y > canvas.height) {
-            bola.vx = 15;
-            bola.vy = -7;
-            bola.direccion = "derecha";
-          } else if (bola.x > canvas.width && bola.y < 0) {
-            bola.vx = -7;
-            bola.vy = 15;
-            bola.direccion = "izquierda";
-          } else if (bola.y > canvas.height) {
-            // Controlo la direccion de rebote de la bola
-            if (bola.direccion == "izquierda") {
-              bola.vx = -7;
-              bola.vy = -7;
-            } else {
-              bola.vx = 7;
-              bola.vy = -7;
-            }
-          } else if (bola.y < 0) {
-            // Controlo la direccion de rebote de la bola
-            if (bola.direccion == "izquierda") {
-              bola.vx = -7;
-              bola.vy = 7;
-            } else {
-              bola.vx = 7;
-              bola.vy = 7;
-            }
-          } else if (bola.x < 0) {
-            bola.vx = 7;
-            bola.direccion = "derecha";
-          } else if (choque_bola_raqueta) {
-            bola.vx = 7;
-            bola.direccion = "derecha";
-            // Vuelvo a poner el choque en false para poder comprobarlo en cada interaccion
-            choque_bola_raqueta = false;
+  var player1 = new raqueta(50,180);
+  var player2 = new raqueta(500,180);
+  var bola = new pelota();
+  var puntos = new contador();
+  player1.init(ctx)
+  player2.init(ctx)
+  player1.draw();
+  player2.draw();
+  bola.init(ctx)
+  bola.draw()
+  puntos.init(ctx);
+  puntos.draw();
+  //linea del centro
+  ctx.setLineDash([7, 10]);
+  ctx.moveTo(300, 0);
+  ctx.lineTo(300, 400);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'white';
+  ctx.stroke();
+  //-- Crear timer para la animación
+  //-- Inicialmente a null
+  var timer = null;
+  //-- Boton de salcar
+  var sacar = document.getElementById('sacar')
+  //-- Función de retrollamda del botón de sacar.
+  sacar.onclick = () => {
+    //-- Si la bola ya se está animando,
+    //-- no hacer nada
+    if (!timer) {
+      //-- Lanzar el timer. Su funcion de retrollamada la definimos
+      //-- en su primer parámetro
+      timer = setInterval(()=>{
+        //-- Esto se ejecuta cada 20ms
+        //actualizar jugadores
+        player1.update()
+        player2.update()
+        //-- Actualizar la bola
+        bola.update();
+        //-- Borrar el canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        //-- Dibuar la bola y raquetas
+        bola.draw();
+        player1.draw();
+        player2.draw();
+        puntos.draw();
+        //linea del centro
+        ctx.setLineDash([7, 10]);
+        ctx.moveTo(300, 0);
+        ctx.lineTo(300, 400);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'white';
+        ctx.stroke();
+        //-- Si la bola llega a la parte derecha del canvas:
+        //-- Rebotar
+        if (bola.x > canvas.width || bola.x < 0) {
+          bola.vx = -bola.vx
+          //-- Eliminar el timer
+          //clearInterval(timer)
+          //timer = null;
+          //bola.update();
+          //-- Bola a su posicion inicial
+          //bola.reset();
+          //-- Dibujar la bola en pos. inicial
+          //bola.draw();
+        };
+        if (bola.y > canvas.height || bola.y < 0) {
+          bola.vy = -bola.vy
+        }
+        if (bola.x < (player1.x + player1.width) && bola.y < (player1.y + player1.height) && bola.y > player1.y) {
+          bola.vx = -bola.vx
+        }
+        if (bola.x > player2.x && bola.y < (player2.y + player2.height) && bola.y > player2.y) {
+          bola.vx = -bola.vx
+        }
+        window.onkeydown = (e) => {
+          e.preventDefault();
+          console.log(e.key);
+          switch (e.key) {
+            case 'w':
+              player1.vy = -5;
+              break;
+            case 's':
+              player1.vy = 5;
+              break;
+            case 'ArrowUp':
+              player2.vy = -5;
+              break;
+            case 'ArrowDown':
+              player2.vy = 5;
+              break;
+            default:
+              break;
           }
-
-        }, 15)
-      }
+        }
+        window.onkeyup = (e) => {
+          switch (e.key) {
+            case 'w':
+              player1.vy = 0;
+              break;
+            case 's':
+              player1.vy = 0;
+              break;
+            case 'ArrowUp':
+              player2.vy = 0;
+              break;
+            case 'ArrowDown':
+              player2.vy = 0;
+              break;
+            default:
+              break;
+          }
+        }
+      },20); //-- timer
     }
-   }
-
-
-   //--puntuacion
-
-
-
-
-   //--raquetas
-
-   //--Bola
-
-
-   //--red
-
-
+  } //-- Fin onclick
 }
