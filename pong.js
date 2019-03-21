@@ -116,10 +116,13 @@ function main(){
   //-- Crear timer para la animación
   //-- Inicialmente a null
   var timer = null;
-  //-- Boton de salcar
-  var sacar = document.getElementById('sacar')
+  var e;
   //-- Función de retrollamda del botón de sacar.
-  sacar.onclick = () => {
+  window.onkeydown = (e) => {
+    e.preventDefault();
+    console.log(e.keyCode)
+    //Numero del espacio para poder sacar dando al espacio o boton sacar
+  if(e.keyCode == '32'){
     //-- Si la bola ya se está animando,
     //-- no hacer nada
     if (!timer) {
@@ -209,4 +212,5 @@ function main(){
       },20); //-- timer
     }
   } //-- Fin onclick
+}
 }
